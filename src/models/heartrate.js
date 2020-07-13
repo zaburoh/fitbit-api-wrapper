@@ -1,19 +1,27 @@
 const instance = require('./base');
-const moment = require('moment');
 
-module.exports = {
+const HeartRate = {
   prefix: 'user/-/activities/heart/',
+  baseDate: 'today',
   period: {
-    day: '1d',
-    week: '7d',
-    month: '30d',
+    DAY: '1d',
+    SEVEN_DAY: '7d',
+    THIRTY_DAY: '30d',
+    WEEK: '1w',
+    MONTH: '1m',
   },
 
-  heartrate: function (dateTime) {
+  date: function (date = this.baseDate, period = this.period.DAY) {
     const resource = 'date/';
-    const date = dateTime || moment().subtract(1, 'days').format('YYYY-MM-DD');
+    return instance.get(this.prefix + resource + date + '/' + period + '.json');
+  },
+
+  range: function (startDate, endDate) {
+    const resource = 'date/';
     return instance.get(
-      this.prefix + resource + date + '/' + this.period.day + '.json'
+      this.prefix + resource + startDate + '/' + endDate + '.json'
     );
   },
 };
+
+module.exports = HeartRate;

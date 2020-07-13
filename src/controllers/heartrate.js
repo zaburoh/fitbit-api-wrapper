@@ -1,15 +1,21 @@
-const model = require('../models/heartrate');
+const HeartRate = require('../models/heartrate');
+const Responase = require('../util/response');
 
 module.exports = {
-  get: async function (dateTime) {
+  getDate: async function (dateTime) {
     try {
-      let data = await model.heartrate(dateTime);
-      console.log(`[status]: ${data.status}`);
-      console.log(`[txt]: ${data.statusText}`);
-      console.log(data.data['activities-heart']);
-      console.log(data.data['activities-heart-intraday']);
+      let data = await HeartRate.date(dateTime);
+      Responase.success(data);
     } catch (err) {
-      console.log(err.response);
+      Responase.error(err);
+    }
+  },
+  getRange: async function (startDate, endDate) {
+    try {
+      let data = await HeartRate.range(startDate, endDate);
+      Responase.success(data);
+    } catch (err) {
+      Responase.error(err);
     }
   },
 };
