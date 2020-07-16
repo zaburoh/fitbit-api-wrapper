@@ -1,4 +1,5 @@
-const instance = require('./base');
+const BaseModel = require('./base');
+const instance = new BaseModel(1).instance;
 
 const HeartRate = {
   prefix: 'user/-/activities/heart/',

@@ -1,11 +1,19 @@
 const config = require('../config');
 const axios = require('axios');
 
-module.exports = axios.create({
-  baseURL: 'https://api.fitbit.com/1/',
-  timeout: 15000,
-  headers: {
-    'Aceept-Locale': 'ja_JP',
-    Authorization: 'Bearer ' + config.FITBIT_BEARER_TOKEN,
-  },
-});
+class BaseModel {
+  constructor(version = 1, token) {
+    this.regex = /VERSION/;
+    this.token = token || config.FITBIT_BEARER_TOKEN;
+    this.instance = axios.create({
+      baseURL: 'https://api.fitbit.com/VERSION/'.replace(this.regex, version),
+      timeout: 15000,
+      headers: {
+        'Aceept-Locale': 'ja_JP',
+        Authorization: 'Bearer ' + this.token,
+      },
+    });
+  }
+}
+
+module.exports = BaseModel;
